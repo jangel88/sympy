@@ -1,0 +1,3 @@
+python packages need __init__.py so first
+
+> touch __init__.py
