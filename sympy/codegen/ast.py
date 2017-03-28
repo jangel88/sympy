@@ -74,10 +74,11 @@ class Assignment(Relational):
         from sympy.matrices.expressions.matexpr import (
             MatrixElement, MatrixSymbol)
         from sympy.tensor.indexed import Indexed
+        from sympy.gridfunction.indexed import Indexed
         lhs = _sympify(lhs)
         rhs = _sympify(rhs)
         # Tuple of things that can be on the lhs of an assignment
-        assignable = (Symbol, MatrixSymbol, MatrixElement, Indexed)
+        assignable = (Symbol, MatrixSymbol, MatrixElement, Indexed,)
         if not isinstance(lhs, assignable):
             raise TypeError("Cannot assign to lhs of type %s." % type(lhs))
         # Indexed types implement shape, but don't define it until later. This

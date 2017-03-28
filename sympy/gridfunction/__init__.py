@@ -5,8 +5,9 @@ from .indexed import IndexedBase, Idx, Indexed
 #    SparseNDimArray,)
 from sympy import Rational
 from sympy import symbols
-ix,iy,iz = symbols('ix iy iz',cld=Idx)
+ix,iy,iz = symbols('ix iy iz',cld=Idx) 
 dx,dy,dz = symbols('dx dy dz')
+dr,ds,dt = symbols('dr ds dt')
 xi = symbols('xi')
 u = IndexedBase('u')
 um = IndexedBase('um')
@@ -47,3 +48,48 @@ def Dmy(u,dy):
 
 def D0y(u,dy):
 	return 1/(2*dy)*(u.subs({iy:iy+1})-u.subs({iy:iy-1}))
+
+def Dpr(u,dr):
+	return 1/dr*(u.subs({ix:ix+1})-u.subs({ix:ix}))
+
+def Dmr(u,dr):
+	return 1/dr*(u.subs({ix:ix})-u.subs({ix:ix-1}))
+
+def D0r(u,dr):
+	return 1/(2*dr)*(u.subs({ix:ix+1})-u.subs({ix:ix-1}))
+def Dpmr(u,dr):
+        return Dpr(Dmr(u,dr),dr)
+def Dpmr2(u,dr):
+        return Dpmr(Dpmr(u,dr),dr) 
+def Dpmr3(u,dr):
+        return Dpmr(Dpmr2(u,dr),dr) 
+def Dpmr4(u,dr):
+        return Dpmr(Dpmr3(u,dr),dr) 
+def Drr2h(u,dr):
+        return Dpmr(u,dr)
+def Drr4h(u,dr):
+        return Drr2h(u,dr)-dr**2*Rational(1,12)*Dpmr2(u,dr)
+def Drr6h(u,dr):
+        return Drr4h(u,dr)+dr**4*Rational(1,90)*Dpmr3(u,dr)
+def Drrrr2h(u,dr):
+        return Dpmr2(u,dr)
+def Drrrr4h(u,dr):
+        return Drrrr2h(u,dr)-dr**2*Rational(1,6)*Dpmr3(u,dr)
+def Apr(u,dr):
+        return Rational(1,2)*(u.subs({ix:ix+1})+u.subs({ix:ix}))
+def Amr(u,dr):
+        return Rational(1,2)*(u.subs({ix:ix})+u.subs({ix:ix-1}))
+def Aps(u,ds):
+        return Rational(1,2)*(u.subs({iy:iy+1})+u.subs({iy:iy}))
+def Ams(u,ds):
+        return Rational(1,2)*(u.subs({iy:iy})+u.subs({iy:iy-1}))
+
+def Dps(u,ds):
+	return 1/ds*(u.subs({iy:iy+1})-u.subs({iy:iy}))
+
+def Dms(u,ds):
+	return 1/ds*(u.subs({iy:iy})-u.subs({iy:iy-1}))
+
+def D0s(u,ds):
+	return 1/(2*ds)*(u.subs({iy:iy+1})-u.subs({iy:iy-1}))
+
