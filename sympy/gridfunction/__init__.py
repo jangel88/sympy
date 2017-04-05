@@ -70,6 +70,43 @@ def Dmy(u,dy):
 def D0y(u,dy):
 	return 1/(2*dy)*(u.subs({iy:iy+1})-u.subs({iy:iy-1}))
 
+def Dpmy(u,dy):
+        return Dpy(Dmy(u,dy),dy)
+def Dpmy2(u,dy):
+        return Dpmy(Dpmy(u,dy),dy) 
+def Dpmy3(u,dy):
+        return Dpmy(Dpmy2(u,dy),dy) 
+def Dpmy4(u,dy):
+        return Dpmy(Dpmy3(u,dy),dy) 
+def Dy2(u,dy):
+    return D0y(u,dy)
+def Dy2mh(u,dy):
+    return Dmy(u,dy)
+def Dy2ph(u,dy):
+    return Dpy(u,dy)
+def Dy4(u,dy):
+    return Dy2(u,dy)-dy**2*Rational(1,6)*D0y(Dpmy(u,dy),dy)
+def Dy4mh(u,dy):
+    return Dy2mh(u,dy)-dy**2*Rational(1,24)*Dmy(Dpmy(u,dy),dy)
+def Dy4ph(u,dy):
+    return Dy2ph(u,dy)-dy**2*Rational(1,24)*Dpy(Dpmy(u,dy),dy)
+def Dyy2(u,dy):
+        return Dpmy(u,dy)
+def Dyy2mh(u,dy):
+    return D0y(Dmy(u,dy),dy)
+def Dyy2ph(u,dy):
+    return D0y(Dpy(u,dy,),dy) 
+def Dyy4(u,dy):
+        return Dyy2(u,dy)-dy**2*Rational(1,12)*Dpmy2(u,dy) 
+def Dyy6(u,dy):
+        return Dyy4(u,dy)+dy**4*Rational(1,90)*Dpmy3(u,dy)
+def Dyyyy2(u,dy):
+        return Dpmy2(u,dy)
+def Dyyyy4(u,dy):
+        return Dyyyy2(u,dy)-dy**2*Rational(1,6)*Dpmy3(u,dy)
+
+
+
 def Dpr(u,dr):
 	return 1/dr*(u.subs({ix:ix+1})-u.subs({ix:ix}))
 
@@ -211,10 +248,11 @@ def Mrs2d2h(udot):
     return (1/J[ix,iy]*Dpr(Rational(1,2)*Amr2h(J[ix,iy]*c*sqrt(g11[ix,iy]),dr)*(Delmr(udot,dr)-dr*D0r(Amr2h(udot,dr),dr)),dr)
            +1/J[ix,iy]*Dps(Rational(1,2)*Ams2h(J[ix,iy]*c*sqrt(g22[ix,iy]),ds)*(Delms(udot,ds)-ds*D0s(Ams2h(udot,ds),ds)),ds)) 
 def Mrs2d4h(udot):
-    return (1/J[ix,iy]*Dpr(Rational(1,2)*Amr4h(J[ix,iy]*c*sqrt(g11[ix,iy]),dr)*(Delmr(udot,dr)-dr*Dr4(Amr2h(udot,dr),dr))
-            +Rational(1,12)*dr**2*Drr4(Delmr(u,dr),dr),dr)
-           +1/J[ix,iy]*Dps(Rational(1,2)*Ams4h(J[ix,iy]*c*sqrt(g22[ix,iy]),ds)*(Delms(udot,ds)-ds*Ds4(Ams2h(udot,ds),ds))
-            +Rational(1,12)*ds**2*Dss4(Delms(u,ds),ds),ds))
+    return (1/J[ix,iy]*Dpr(Rational(1,2)*Amr4h(J[ix,iy]*c*sqrt(g11[ix,iy]),dr)*(Delmr(udot,dr)-dr*Dr4(Amr2h(udot,dr),dr)
+            +Rational(1,12)*dr**2*Drr4(Delmr(udot,dr),dr)),dr)
+           +1/J[ix,iy]*Dps(Rational(1,2)*Ams4h(J[ix,iy]*c*sqrt(g22[ix,iy]),ds)*(Delms(udot,ds)-ds*Ds4(Ams2h(udot,ds),ds)
+            +Rational(1,12)*ds**2*Dss4(Delms(udot,ds),ds)),ds)
+           )
 def Lrs2d2h(u):
     return (1/J[ix,iy]*(Dpr(Amr2h(J[ix,iy]*c**2*g11[ix,iy],dr)*Dmr(u,dr)
                                 +Amr2h(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr2h(D0s(u,ds),dr),dr)
@@ -224,13 +262,17 @@ def Lrs2d4h(u):
     return (1/J[ix,iy]*(Dpr(Amr4h(J[ix,iy]*c**2*g11[ix,iy],dr)*Dr4mh(u,dr)
                            +Amr4h(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr4h(Ds4(u,ds),dr)
                                 -dr**2*Rational(1,24)*(Drr2mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Dr4mh(u,dr)
+                                                       +2*Dr2mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Drr2mh(u,dr)
                                                        +Amr4h(J[ix,iy]*c**2*g11[ix,iy],dr)*Drrr2mh(u,dr)
                                                        +Drr2mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr4h(Ds4(u,ds),dr)
+                                                       +2*Dr2mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Dr2mh(Ds4(u,ds),dr)
                                                        +Amr4h(J[ix,iy]*c**2*g12[ix,iy],dr)*Drr2mh(Ds4(u,ds),dr)),dr)
                        +Dps(Ams4h(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams4h(Dr4(u,dr),ds)
                            +Ams4h(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds4mh(u,ds)
                                 -ds**2*Rational(1,24)*(Dss2mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams4h(Dr4(u,dr),ds)
-                                                       +Ams4h(J[ix,iy]*c**2*g21[ix,iy],ds)*Dss2mh(Dr4(u,dr),ds)
+                                                    +2*Ds2mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ds2mh(Dr4(u,dr),ds)
+                                                       +Ams4h(J[ix,iy]*c**2*g21[ix,iy],ds)*Dss2mh(Dr4(u,dr),ds) 
                                                        +Dss2mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds4mh(u,ds)
+                                                    +2*Ds2mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Dss2mh(u,ds)
                                                        +Ams4h(J[ix,iy]*c**2*g22[ix,iy],ds)*Dsss2mh(u,ds)),ds) 
                                 ))
