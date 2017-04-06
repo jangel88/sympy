@@ -136,6 +136,8 @@ def Dr2(u,dr):
     return D0r(u,dr)
 def Dr4(u,dr):
     return Dr2(u,dr)-Rational(1,6)*dr**2*D0r(Dpmr(u,dr),dr)
+def Dr6(u,dr):
+    return Dr4(u,dr)+Rational(1,30)*dr**4*D0r(Dpmr2(u,dr),dr) 
 def Drrr2(u,dr):
     return D0r(Dpmr(u,dr),dr)
 
@@ -167,6 +169,12 @@ def Ds2(u,ds):
     return D0s(u,ds)
 def Ds4(u,ds):
     return Ds2(u,ds)-Rational(1,6)*ds**2*D0s(Dpms(u,ds),ds)
+def Ds6(u,ds):
+    return Ds4(u,ds)+Rational(1,30)*ds**4*D0s(Dpms2(u,ds),ds)
+def Dsss2(u,ds):
+    return D0s(Dpms(u,ds),ds)
+
+
 
 
 
@@ -179,10 +187,17 @@ def Dr4mh(u,dr):
     return Dr2mh(u,dr)-Rational(1,24)*dr**2*Dmr(Dpmr(u,dr),dr)
 def Dr4ph(u,dr):
     return Dr2ph(u,dr)-Rational(1,24)*dr**2*Dpr(Dpmr(u,dr),dr) 
+def Dr6mh(u,dr):
+    return Dr4mh(u,dr)+Rational(3,640)*dr**4*Dmr(Dpmr2(u,dr),dr)
+def Dr6ph(u,dr):
+    return Dr4ph(u,dr)+Rational(3,640)*dr**4*Dpr(Dpmr2(u,dr),dr)
+
+
+
 def Drr2mh(u,dr):
     return D0r(Dmr(u,dr),dr)
-def Drr4mh(u,dr):
-    return Drr2mh(u,dr)
+def Drr4mh(u,dr): 
+    return Drr2mh(u,dr)-dr**2*Rational(5,24)*Dmr(Drrr2(u,dr),dr)
 def Drrr2mh(u,dr):
     return Dmr(Dpmr(u,dr),dr)
 def Drrr2ph(u,dr):
@@ -191,6 +206,15 @@ def Drrr4mh(u,dr):
     return Drrr2mh(u,dr)-dr**2*Rational(1,8)*Dmr(Dpmr2(u,dr),dr)
 def Drrr4ph(u,dr):
     return Drrr2ph(u,dr)-dr**2*Rational(1,8)*Dpr(Dpmr2(u,dr),dr)
+def Drrrr2mh(u,dr):
+    return D0r(Drrr2mh(u,dr),dr)
+def Drrrr2ph(u,dr):
+    return D0r(Drrr2ph(u,dr),dr)
+def Drrrrr2mh(u,dr):
+    return Dmr(Dpmr2(u,dr),dr)
+def Drrrrr2ph(u,dr):
+    return Dpr(Dpmr2(u,dr),dr)
+
 
 
 def Ds2mh(u,ds):
@@ -201,8 +225,18 @@ def Ds4mh(u,ds):
     return Ds2mh(u,ds)-Rational(1,24)*ds**2*Dms(Dpms(u,ds),ds)
 def Ds4ph(u,ds):
     return Ds2ph(u,ds)-Rational(1,24)*ds**2*Dps(Dpms(u,ds),ds) 
+def Ds6mh(u,ds):
+    return Ds4mh(u,ds)+Rational(3,640)*ds**4*Dms(Dpms2(u,ds),ds)
+def Ds6ph(u,ds):
+    return Ds4ph(u,ds)+Rational(3,640)*ds**4*Dps(Dpms2(u,ds),ds)
+
+
+
 def Dss2mh(u,ds):
     return D0s(Dms(u,ds),ds)
+def Dss4mh(u,ds): 
+    return Dss2mh(u,ds)-ds**2*Rational(5,24)*Dms(Dsss2(u,ds),ds)
+
 def Dsss2mh(u,ds):
     return Dms(Dpms(u,ds),ds)
 def Dsss2ph(u,ds):
@@ -210,7 +244,16 @@ def Dsss2ph(u,ds):
 def Dsss4mh(u,ds): 
     return Dsss2mh(u,ds)-ds**2*Rational(1,8)*Dms(Dpms2(u,ds),ds)
 def Dsss4ph(u,ds):
-    return Dsss2ph(u,ds)-ds**2*Rational(1,8)*Dps(Dpms2(u,ds),ds)
+    return Dsss2ph(u,ds)-ds**2*Rational(1,8)*Dps(Dpms2(u,ds),ds) 
+def Dssss2mh(u,ds):
+    return D0s(Dsss2mh(u,ds),ds)
+def Dssss2ph(u,ds):
+    return D0s(Dsss2ph(u,ds),ds)
+def Dsssss2mh(u,ds):
+    return Dms(Dpms2(u,ds),ds)
+def Dsssss2ph(u,ds):
+    return Dps(Dpms2(u,ds),ds)
+
 
 
 
@@ -244,6 +287,16 @@ def Aps4h(u,ds):
         return Rational(1,16)*(-u.subs({iy:iy+2})+9*u.subs({iy:iy+1})+9*u.subs({iy:iy})-u.subs({iy:iy-1}))
 def Ams4h(u,ds):
         return Rational(1,16)*(-u.subs({iy:iy+1})+9*u.subs({iy:iy})+9*u.subs({iy:iy-1})-u.subs({iy:iy-2})) 
+def Apr6h(u,dr):
+        return Apr4h(u,dr)+dr**4*Rational(3,128)*Drrrr2ph(u,dr)
+def Amr6h(u,dr):
+        return Amr4h(u,dr)+dr**4*Rational(3,128)*Drrrr2mh(u,dr)
+def Aps6h(u,ds):
+        return Aps4h(u,ds)+ds**4*Rational(3,128)*Dssss2ph(u,ds)
+def Ams6h(u,ds):
+        return Ams4h(u,ds)+ds**4*Rational(3,128)*Dssss2mh(u,ds)
+
+
 def Mrs2d2h(udot):
     return (1/J[ix,iy]*Dpr(Rational(1,2)*Amr2h(J[ix,iy]*c*sqrt(g11[ix,iy]),dr)*(Delmr(udot,dr)-dr*D0r(Amr2h(udot,dr),dr)),dr)
            +1/J[ix,iy]*Dps(Rational(1,2)*Ams2h(J[ix,iy]*c*sqrt(g22[ix,iy]),ds)*(Delms(udot,ds)-ds*D0s(Ams2h(udot,ds),ds)),ds)) 
@@ -252,7 +305,15 @@ def Mrs2d4h(udot):
             +Rational(1,12)*dr**2*Drr4(Delmr(udot,dr),dr)),dr)
            +1/J[ix,iy]*Dps(Rational(1,2)*Ams4h(J[ix,iy]*c*sqrt(g22[ix,iy]),ds)*(Delms(udot,ds)-ds*Ds4(Ams2h(udot,ds),ds)
             +Rational(1,12)*ds**2*Dss4(Delms(udot,ds),ds)),ds)
+           ) 
+def Mrs2d6h(udot):
+    return (1/J[ix,iy]*Dpr(Rational(1,2)*Amr6h(J[ix,iy]*c*sqrt(g11[ix,iy]),dr)*(Delmr(udot,dr)-dr*Dr6(Amr2h(udot,dr),dr)
+            +Rational(1,12)*dr**2*Drr4(Delmr(udot,dr),dr)-Rational(1,720)*dr**4*Drrrr2(Delmr(u,dr),dr)),dr)
+           +1/J[ix,iy]*Dps(Rational(1,2)*Ams6h(J[ix,iy]*c*sqrt(g22[ix,iy]),ds)*(Delms(udot,ds)-ds*Ds6(Ams2h(udot,ds),ds) 
+            +Rational(1,12)*ds**2*Dss4(Delms(udot,ds),ds)-Rational(1,720)*ds**4*Dssss2(Delms(u,ds),ds)),ds) 
            )
+
+    
 def Lrs2d2h(u):
     return (1/J[ix,iy]*(Dpr(Amr2h(J[ix,iy]*c**2*g11[ix,iy],dr)*Dmr(u,dr)
                                 +Amr2h(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr2h(D0s(u,ds),dr),dr)
@@ -270,9 +331,49 @@ def Lrs2d4h(u):
                        +Dps(Ams4h(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams4h(Dr4(u,dr),ds)
                            +Ams4h(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds4mh(u,ds)
                                 -ds**2*Rational(1,24)*(Dss2mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams4h(Dr4(u,dr),ds)
-                                                    +2*Ds2mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ds2mh(Dr4(u,dr),ds)
+                                                    +2*Ds2mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ds4mh(Dr4(u,dr),ds)
                                                        +Ams4h(J[ix,iy]*c**2*g21[ix,iy],ds)*Dss2mh(Dr4(u,dr),ds) 
                                                        +Dss2mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds4mh(u,ds)
                                                     +2*Ds2mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Dss2mh(u,ds)
                                                        +Ams4h(J[ix,iy]*c**2*g22[ix,iy],ds)*Dsss2mh(u,ds)),ds) 
                                 ))
+def Lrs2d6h(u):
+    return (1/J[ix,iy]*(Dpr(Amr6h(J[ix,iy]*c**2*g11[ix,iy],dr)*Dr6mh(u,dr)
+                           +Amr6h(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr6h(Ds6(u,ds),dr)
+                                -dr**2*Rational(1,24)*(Drr4mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Dr6mh(u,dr)
+                                                       +2*Dr6mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Drr4mh(u,dr)
+                                                       +Amr6h(J[ix,iy]*c**2*g11[ix,iy],dr)*Drrr4mh(u,dr)
+                                                       +Drr4mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr6h(Ds6(u,ds),dr)
+                                                       +2*Dr6mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Dr4mh(Ds6(u,ds),dr)
+                                                       +Amr6h(J[ix,iy]*c**2*g12[ix,iy],dr)*Drr4mh(Ds6(u,ds),dr))
+                                +dr**4*Rational(7,5760)*(Drrrr2mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Dr6mh(u,dr)
+                                                         +4*Drrr4mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Drr4mh(u,dr)
+                                                         +6*Drr4mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Drrr4mh(u,dr)
+                                                         +4*Dr6mh(J[ix,iy]*c**2*g11[ix,iy],dr)*Drrrr2mh(u,dr)
+                                                        +Amr6h(J[ix,iy]*c**2*g11[ix,iy],dr)*Drrrrr2mh(u,dr)
+                                                        +Drrrr2mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Amr6h(Ds6(u,ds),dr)
+                                                         +4*Drrr4mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Dr6mh(Ds6(u,ds),dr)
+                                                         +6*Drr4mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Drr4mh(Ds6(u,ds),dr)
+                                                         +4*Dr6mh(J[ix,iy]*c**2*g12[ix,iy],dr)*Drrr4mh(Ds6(u,ds),dr)
+                                                        +Amr6h(J[ix,iy]*c**2*g12[ix,iy],dr)*Drrrr2mh(Ds6(u,ds),dr)),dr)
+                       +Dps(Ams6h(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams6h(Dr6(u,dr),ds)
+                           +Ams6h(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds6mh(u,ds)
+                                -ds**2*Rational(1,24)*(Dss4mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams6h(Dr6(u,dr),ds)
+                                                       +2*Ds6mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ds6mh(Dr6(u,dr),ds)
+                                                       +Ams6h(J[ix,iy]*c**2*g21[ix,iy],ds)*Dss4mh(Dr6(u,dr),ds)
+                                                       +Dss4mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds6mh(u,ds)
+                                                       +2*Ds6mh(J[ix,iy]*c**2*g22[ix,iy],dr)*Dss4mh(u,ds)
+                                                       +Ams6h(J[ix,iy]*c**2*g22[ix,iy],ds)*Dsss4mh(u,ds))
+                                +ds**4*Rational(7,5760)*(Dssss2mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ams6h(Dr6(u,dr),ds)
+                                                         +4*Dsss4mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Ds6mh(Dr6(u,dr),ds)
+                                                         +6*Dss4mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Dss4mh(Dr6(u,dr),ds)
+                                                         +4*Ds6mh(J[ix,iy]*c**2*g21[ix,iy],ds)*Dsss4mh(Dr6(u,dr),ds)
+                                                        +Ams6h(J[ix,iy]*c**2*g21[ix,iy],ds)*Dssss2mh(Dr6(u,dr),ds)
+                                                        +Dssss2mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Ds6mh(u,ds)
+                                                         +4*Dsss4mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Dss4mh(u,ds)
+                                                         +6*Dss4mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Dsss4mh(u,ds)
+                                                         +4*Ds6mh(J[ix,iy]*c**2*g22[ix,iy],ds)*Dssss2mh(u,ds)
+                                                        +Ams6h(J[ix,iy]*c**2*g22[ix,iy],ds)*Dsssss2mh(u,ds)),ds)
+
+                                ))
+
